@@ -66,7 +66,7 @@ exports.confirmOrder = async (req, res) => {
 exports.getOrderDetails = async (req, res) => {
     const {orderId} = req.query;
 
-    const order = await Order.findOne({orderId})
+    const order = await Order.findOne({receipt:orderId})
     if (!order) {
         return res.status(404).json({error: 'Order not found'});
     }
