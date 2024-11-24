@@ -31,7 +31,7 @@ api.interceptors.response.use(
       // Handle common response errors (e.g., token expiration)
       if (error.response.status === 401) {
         console.warn('Unauthorized. Redirecting to login.');
-        window.location.href = '/not-authorized'; // Redirect to login
+        // window.location.href = '/not-authorized'; // Redirect to login
       } else {
         console.error('Response error:', error.response.data.message || 'Unknown error');
       }
