@@ -4,8 +4,8 @@ const { createPaymentOrder,verifyPayment, getPaymentInsights } = require("../con
 const { auth } = require("../middleware/authMiddleware");
 
 
-router.post('/create-order',auth(['admin']), createPaymentOrder);
-router.post('/verify-payment',auth(['admin']), verifyPayment);
+router.post('/create-order', createPaymentOrder);
+router.post('/verify-payment', verifyPayment);
 router.get('/insights',auth(['owner']), getPaymentInsights);
 
 module.exports = router;
