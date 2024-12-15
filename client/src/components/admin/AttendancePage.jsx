@@ -23,7 +23,7 @@ const AttendancePage = () => {
                 const response = adminId
                     ? await api.get(`/admin/attendance/admins?adminId=${adminId}`)
                     : await api.get("/admin/attendance/admins");
-                setAdmin(response.data.user);
+                setAdmin(response?.data.user);
             } catch (error) {
                 console.error("Error fetching attendance:", error);
             }
@@ -35,7 +35,7 @@ const AttendancePage = () => {
     const calculateSalary = (attendanceRecords) => {
         let totalSalary = 0;
 
-        attendanceRecords.forEach((record) => {
+        attendanceRecords?.forEach((record) => {
             if (record.status === "present") {
                 totalSalary += dailySalary;
             } else if (record.status === "issue") {
@@ -49,7 +49,7 @@ const AttendancePage = () => {
     const handleAttendanceUpdate = async (attendanceId, newStatus) => {
         try {
             await api.patch("/admin/attendance/update", {
-                adminId: admin._id,
+                adminId: admin?._id,
                 attendanceId,
                 status: newStatus || attendanceStatus,
             });
@@ -83,7 +83,7 @@ const AttendancePage = () => {
                             : "present";
 
                 await api.patch(`/admin/attendance/update`, {
-                    adminId: admin._id,
+                    adminId: admin?._id,
                     attendanceId,
                     status: newStatus,
                 });
@@ -103,13 +103,13 @@ const AttendancePage = () => {
 
         try {
             const res = await api.post("/admin/attendance/raise-issue", {
-                adminId: admin._id,
+                adminId: admin?._id,
                 reason: issueReason,
             });
 
             setIsIssueModalOpen(false);
             setIssueReason("");
-            alert(res.data.message);
+            alert(res?.data?.message);
             const response = await api.get(`/admin/attendance/admins`);
             setAdmin(response.data.user);
         } catch (error) {
