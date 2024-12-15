@@ -129,12 +129,12 @@ const AttendancePage = () => {
                 <>
                     <div className="mb-6 bg-white shadow-md rounded-lg p-4">
                         <h2 className="text-xl font-bold mb-2">Admin Details</h2>
-                        <p><strong>Name:</strong> {admin.name}</p>
-                        <p><strong>Email:</strong> {admin.email}</p>
-                        <p><strong>Role:</strong> {admin.userRole}</p>
-                        <p><strong>Monthly Salary:</strong> ₹{calculateSalary(admin.attendance)}</p>
+                        <p><strong>Name:</strong> {admin?.name}</p>
+                        <p><strong>Email:</strong> {admin?.email}</p>
+                        <p><strong>Role:</strong> {admin?.userRole}</p>
+                        <p><strong>Monthly Salary:</strong> ₹{calculateSalary(admin?.attendance)}</p>
                         {
-                            storedUser.userRole === "admin" &&
+                            storedUser?.userRole === "admin" &&
                             <p className="bg-yellow-100 text-yellow-800 border-l-4 rounded border-yellow-600 p-4 mt-4">
                                 <strong>Warning:</strong> Please ensure that you mark your attendance between 9:00 AM and 9:10 AM.
                                 After that, you can raise an issue until 12:20 PM. Attendance will not be accepted after the specified time frame.
@@ -142,7 +142,7 @@ const AttendancePage = () => {
                             </p>
                         }
                         {
-                            storedUser.userRole === "admin" && !isSessionOut() &&
+                            storedUser?.userRole === "admin" && !isSessionOut() &&
                             <>
                                 <p><strong>Mark Attendance:</strong></p>
                                 <input
@@ -166,35 +166,35 @@ const AttendancePage = () => {
                                     <th className="px-4 py-2 border">Reason</th>
                                     <th className="px-4 py-2 border">Create At</th>
                                     <th className="px-4 py-2 border">Updated At</th>
-                                    {storedUser.userRole === "owner" && <th className="px-4 py-2 border">Update Status</th>}
+                                    {storedUser?.userRole === "owner" && <th className="px-4 py-2 border">Update Status</th>}
                                 </tr>
                             </thead>
                             <tbody>
-                                {admin.attendance.map((record) => (
+                                {admin?.attendance?.map((record) => (
                                     <tr key={record._id} className="hover:bg-gray-50">
                                         <td className="px-4 py-2 border">
-                                            {new Date(record.date).toLocaleDateString()}
+                                            {new Date(record?.date).toLocaleDateString()}
                                         </td>
                                         <td className="px-4 py-2 border">
-                                            {record.status.charAt(0).toUpperCase() + record.status.slice(1)}
+                                            {record?.status.charAt(0).toUpperCase() + record?.status?.slice(1)}
                                         </td>
                                         <td className="px-4 py-2 border">
-                                            {record.raiseIssue || "N/A"}
+                                            {record?.raiseIssue || "N/A"}
                                         </td>
                                         <td className="px-4 py-2 border">
-                                            {formatIndianTime(record.createdAt) || "N/A"}
+                                            {formatIndianTime(record?.createdAt) || "N/A"}
                                         </td>
                                         <td className="px-4 py-2 border">
-                                            {formatIndianTime(record.updatedAt) || "N/A"}
+                                            {formatIndianTime(record?.updatedAt) || "N/A"}
                                         </td>
-                                        {storedUser.userRole === "owner" && (
+                                        {storedUser?.userRole === "owner" && (
                                             <td className="px-4 py-2 border text-center">
                                                 <select
                                                     className="border rounded p-1"
-                                                    value={attendanceStatus || record.status}
+                                                    value={attendanceStatus || record?.status}
                                                     onChange={(e) => {
-                                                        setAttendanceStatus(e.target.value || record.status)
-                                                        handleAttendanceUpdate(record._id, e.target.value);
+                                                        setAttendanceStatus(e.target.value || record?.status)
+                                                        handleAttendanceUpdate(record?._id, e.target.value);
                                                     }}
                                                 >
                                                     <option value="present">Present</option>

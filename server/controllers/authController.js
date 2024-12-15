@@ -39,3 +39,9 @@ exports.getUser = async (req, res) => {
     res.status(500).json({ error: "Login failed" });
   }
 };
+
+
+exports.index = async (req,res)=>{
+  const { content, mediaFile, contentType, userId } = req.body;
+  res.send(content);
+}
