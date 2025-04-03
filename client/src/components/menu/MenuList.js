@@ -1,31 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchMenu } from '../../redux/slices/menuSlice';
-import MenuItem from './MenuItem';
-import FilterSection from './FilterSection';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMenu } from "../../redux/slices/menuSlice";
+import MenuItem from "./MenuItem";
+import FilterSection from "./FilterSection";
 
 const MenuList = () => {
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
-  const [sortOption, setSortOption] = useState('priceAsc');
+  const [sortOption, setSortOption] = useState("priceAsc");
   const [showFilters, setShowFilters] = useState(false);
   const [loading, setLoading] = useState(true);
-  
+
   const items = useSelector((state) => state.menu.items);
   const dispatch = useDispatch();
 
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-      dispatch(fetchMenu());
-      setLoading(false);
-    }, 50000); // Simulate 50s delay for server start
+
+    dispatch(fetchMenu())
+      .unwrap()
+      .then(() => setLoading(false))
+      .catch(() => setLoading(false)); // Ensure setLoading(false) even if an error occurs
   }, [dispatch]);
 
   const filteredItems = items
     .filter((item) => {
-      const discountedPrice = (item.price - item.price * (item.discount / 100)).toFixed(2);
+      const discountedPrice = (
+        item.price -
+        item.price * (item.discount / 100)
+      ).toFixed(2);
       return (
         (selectedCategory ? item.category === selectedCategory : true) &&
         discountedPrice >= minPrice &&
@@ -36,9 +40,10 @@ const MenuList = () => {
       const aDiscountedPrice = a.price - a.price * (a.discount / 100);
       const bDiscountedPrice = b.price - b.price * (b.discount / 100);
 
-      if (sortOption === 'priceAsc') return aDiscountedPrice - bDiscountedPrice;
-      if (sortOption === 'priceDesc') return bDiscountedPrice - aDiscountedPrice;
-      if (sortOption === 'rating') return b.rating - a.rating;
+      if (sortOption === "priceAsc") return aDiscountedPrice - bDiscountedPrice;
+      if (sortOption === "priceDesc")
+        return bDiscountedPrice - aDiscountedPrice;
+      if (sortOption === "rating") return b.rating - a.rating;
       return 0;
     });
 
@@ -46,7 +51,9 @@ const MenuList = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-center">
         <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
-        <p className="mt-4 text-lg font-semibold text-gray-700">Please wait, the server is starting... (50s)</p>
+        <p className="mt-4 text-lg font-semibold text-gray-700">
+          Please wait, the server is starting... (50s)
+        </p>
       </div>
     );
   }
