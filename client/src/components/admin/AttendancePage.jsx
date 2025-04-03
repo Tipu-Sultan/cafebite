@@ -21,7 +21,7 @@ const AttendancePage = () => {
         const fetchAttendance = async () => {
             try {
                 const response = adminId
-                    ? await api.get(`/admin/attendance/admins?adminId=${adminId}`)
+                    ? await api.get(`/admin/attendance/admins/adminId=${adminId}`)
                     : await api.get("/admin/attendance/admins");
                 setAdmin(response?.data.user);
             } catch (error) {

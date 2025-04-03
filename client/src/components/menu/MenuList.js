@@ -10,18 +10,18 @@ const MenuList = () => {
   const [maxPrice, setMaxPrice] = useState(1000);
   const [sortOption, setSortOption] = useState('priceAsc');
   const [showFilters, setShowFilters] = useState(false);
-
+  const [loading, setLoading] = useState(true);
+  
   const items = useSelector((state) => state.menu.items);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (items.length === 0) {
-      dispatch(fetchMenu())
-    }
-
-  }, [dispatch, items]);
-
-
+    setLoading(true);
+    setTimeout(() => {
+      dispatch(fetchMenu());
+      setLoading(false);
+    }, 50000); // Simulate 50s delay for server start
+  }, [dispatch]);
 
   const filteredItems = items
     .filter((item) => {
@@ -42,7 +42,14 @@ const MenuList = () => {
       return 0;
     });
 
-
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen text-center">
+        <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+        <p className="mt-4 text-lg font-semibold text-gray-700">Please wait, the server is starting... (50s)</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col sm:flex-row p-4">
